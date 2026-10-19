@@ -1,0 +1,26 @@
+chalgadle.com {
+	# Управлението не е достъпно отвън
+	@admin path /admin* /api/admin/* /api/scan*
+	handle @admin {
+		respond 404
+	}
+
+	# Security headers за всички отговори
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+		-Server
+		-Via
+	}
+
+	# Директно към играта без парола
+	handle {
+		reverse_proxy 127.0.0.1:3000 {
+			header_down -X-Powered-By
+		}
+	}
+}

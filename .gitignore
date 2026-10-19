@@ -1,0 +1,24 @@
+# Content and data — never committed
+app/music/
+app/data/
+*.db
+*.db-journal
+*.db-wal
+
+# Generated / temporary
+node_modules/
+*.bak
+*.bak[0-9]
+*.tmp
+*.log
+covers.log
+
+# Secrets
+.env
+ddns.sh
+!config/ddns.example.sh
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/

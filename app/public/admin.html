@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="bg">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Управление · Познай песента</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-icon">▶</span>Управление</div>
+    <div class="stats">
+      <span id="genreChips"></span>
+      <a class="to-game" href="/" target="_blank">Към играта ↗</a>
+    </div>
+  </header>
+
+  <main class="admin">
+    <!-- Сканиране -->
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Песни в папката</h2>
+        <button class="btn primary" id="scanBtn">Сканирай папката</button>
+      </div>
+      <p class="muted">Слагай песните в <b>music</b>, в подпапка за всеки жанр (напр. <code>music\Поп-фолк</code>). Името на подпапката е жанрът в играта.</p>
+      <div id="scanResult"></div>
+    </section>
+
+    <!-- Автоматично начало -->
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Автоматично начало</h2>
+      </div>
+      <p class="muted" id="anaInfo"></p>
+      <div class="field-row">
+        <button class="btn primary" id="anaNewBtn">Намери начало за новите</button>
+        <button class="btn" id="anaAllBtn">Анализирай наново всички</button>
+        <label class="check"><input type="checkbox" id="anaIncludeManual"> и тези, нагласени на ръка</label>
+      </div>
+      <div class="progress-box" id="anaProgress" hidden>
+        <div class="pbar"><div id="anaBar"></div></div>
+        <div class="pline"><span id="anaText"></span><button class="ghost sm" id="anaStop">Спри</button></div>
+      </div>
+    </section>
+
+    <!-- Обложки -->
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Обложки</h2>
+        <div class="cv-head-btns">
+          <button class="btn sm" id="coverApproveAll" hidden>✓ Одобри всички</button>
+          <button class="ghost sm" id="coverReload">Обнови</button>
+        </div>
+      </div>
+      <div class="pills" id="coverTabs">
+        <button data-show="review" class="active">За преглед</button>
+        <button data-show="missing">Без обложка</button>
+      </div>
+      <p class="muted" id="coverInfo"></p>
+      <div class="cv-list" id="coverList"></div>
+    </section>
+
+    <!-- Редактор -->
+    <section class="panel editing" id="editor" hidden>
+      <div class="panel-head">
+        <h2 id="edTitle">Песен</h2>
+        <button class="ghost" id="edClose">Затвори</button>
+      </div>
+
+      <div class="wave-wrap">
+        <canvas id="wave" height="150"></canvas>
+        <div class="wave-time" id="waveTime"></div>
+      </div>
+      <div class="legend">
+        <span><i class="lg clip"></i>откъс (16 сек)</span>
+        <span><i class="lg chorus"></i>открит припев</span>
+        <span><i class="lg entry"></i>песента влиза</span>
+        <span class="muted" id="edReason"></span>
+      </div>
+
+      <div class="ed-grid">
+        <div class="fields">
+          <div class="label">Начало на откъса</div>
+          <div class="start-row">
+            <button class="ghost sm" data-nudge="-5">−5</button>
+            <button class="ghost sm" data-nudge="-1">−1</button>
+            <button class="ghost sm" data-nudge="-0.1">−0,1</button>
+            <input id="edStart" type="number" min="0" step="0.1">
+            <button class="ghost sm" data-nudge="0.1">+0,1</button>
+            <button class="ghost sm" data-nudge="1">+1</button>
+            <button class="ghost sm" data-nudge="5">+5</button>
+          </div>
+          <div class="muted small" id="edStartInfo"></div>
+
+          <div class="label">Чуй откъса</div>
+          <div class="pills preview" id="preview">
+            <button data-d="0.1">0,1с</button>
+            <button data-d="0.5">0,5с</button>
+            <button data-d="2">2с</button>
+            <button data-d="8">8с</button>
+            <button data-d="16">16с</button>
+            <button data-d="0" title="Пуска от маркера, докато не спреш">▶ от тук</button>
+          </div>
+
+          <div class="field-row tight">
+            <button class="btn" id="edAuto">Намери начало</button>
+            <button class="btn" id="edRevert" title="Връща предложението на автоматиката">Върни автоматичното</button>
+          </div>
+        </div>
+
+        <div class="fields">
+          <label>Изпълнител<input id="edArtist"></label>
+          <label>Заглавие<input id="edSong"></label>
+          <label>Жанр<input id="edGenre" list="genreList"></label>
+          <datalist id="genreList"></datalist>
+          <div class="muted small" id="edFile"></div>
+        </div>
+      </div>
+
+      <div class="msg" id="edMsg"></div>
+      <div class="field-row">
+        <button class="btn primary" id="edSave">Запази</button>
+        <button class="btn danger" id="edDelete">Изтрий от играта</button>
+      </div>
+    </section>
+
+    <!-- Списък -->
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Всички песни <span class="count" id="cAll">0</span></h2>
+        <button class="ghost sm" id="unhideBtn" hidden></button>
+      </div>
+      <div class="field-row">
+        <input id="lSearch" placeholder="Търси…">
+        <div class="pills" id="lGenre"></div>
+        <div class="pills" id="lState">
+          <button data-s="all" class="active">Всички</button>
+          <button data-s="none">Без начало</button>
+          <button data-s="manual">На ръка</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Изпълнител</th><th>Заглавие</th><th>Жанр</th><th>Начало</th><th></th></tr>
+          </thead>
+          <tbody id="list"></tbody>
+        </table>
+      </div>
+      <p class="muted center" id="listEmpty" hidden>Няма песни.</p>
+      <div class="center" id="moreWrap" hidden><button class="ghost" id="moreBtn">Покажи още</button></div>
+    </section>
+  </main>
+
+  <script src="analyze.js"></script>
+  <script src="admin.js"></script>
+  <script src="admin.covers.js"></script>
+</body>
+</html>

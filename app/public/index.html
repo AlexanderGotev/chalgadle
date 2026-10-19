@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="bg">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Познай песента</title>
+  <meta name="description" content="Онлайн игра — познай българската песен само по няколко секунди от нея. Поп-фолк и чалга, хип-хоп и рап, поп и естрада.">
+  <meta property="og:title" content="Познай песента — chalgadle">
+  <meta property="og:description" content="Познай българската песен само по няколко секунди от нея.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://chalgadle.com">
+  <meta property="og:image" content="https://chalgadle.com/favicon.svg">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,700;1,800;1,900&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="spotlight" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="brand"><span class="brand-icon">▶</span>Познай песента</div>
+    <div class="stats">
+      <span>Серия <b id="streak">0</b></span>
+      <span>Познати <b id="wins">0</b></span>
+    </div>
+  </header>
+
+  <main class="game">
+    <div class="watermark" aria-hidden="true">chalgadle</div>
+
+    <nav class="genres" id="genres" aria-label="Жанр">
+      <button class="genre active" data-genre="all">Всички</button>
+    </nav>
+
+    <div class="progress" id="progress">
+      <div class="progress-track" id="progressTrack"></div>
+      <div class="progress-clip"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-labels" id="progressLabels"></div>
+    </div>
+
+    <div class="player">
+      <button id="playBtn" class="play" aria-label="Пусни">
+        <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg>
+        <svg class="icon-stop" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="1.5"/></svg>
+      </button>
+      <span id="durLabel" class="dur">0,1с</span>
+    </div>
+    <div class="status" id="status">Зарежда…</div>
+
+    <div class="volume" title="Сила на звука">
+      <svg class="vol-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h3.5L13 19V5L7.5 9H4z"/><path class="vol-wave" d="M16 8.5a4.5 4.5 0 0 1 0 7"/></svg>
+      <input id="volRange" class="vol-range" type="range" min="0" max="100" value="100" aria-label="Сила на звука">
+    </div>
+
+    <div class="guess-row">
+      <div class="search">
+        <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        <input id="guessInput" type="text" autocomplete="off" spellcheck="false"
+               placeholder="Изпълнител или песен…">
+        <ul id="suggestions" class="suggestions" hidden></ul>
+      </div>
+      <button id="actionBtn" class="action skip">Пропусни</button>
+    </div>
+    <div class="hint" id="hint"></div>
+
+    <ol id="attempts" class="attempts"></ol>
+  </main>
+
+  <div id="overlay" class="overlay" hidden>
+    <div class="card" id="card">
+      <div class="result-badge" id="resultBadge"></div>
+      <h2 id="resultTitle"></h2>
+      <p id="resultText"></p>
+      <div class="reveal">
+        <div class="cover" id="cover"></div>
+        <div class="reveal-text">
+          <b id="revealTitle"></b>
+          <span id="revealArtist"></span>
+        </div>
+        <button id="listenBtn" class="listen" aria-label="Чуй откъса">
+          <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg>
+          <svg class="icon-stop" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="1.5"/></svg>
+        </button>
+      </div>
+      <button id="nextBtn" class="primary"></button>
+    </div>
+  </div>
+
+  <script src="player.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
