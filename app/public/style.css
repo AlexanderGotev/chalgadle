@@ -160,16 +160,15 @@ button { font: inherit; cursor: pointer; border: 0; }
   pointer-events: none;
 }
 .progress-fill {
-  /* Започва 26 px (височината на бара) вляво извън бара, за да е винаги поне
-     толкова дълго, колкото е високо — така десният край е истински полукръг,
-     а левият следва извивката на бара. */
+  /* Започва 26 px вляво извън бара, за да е левият край винаги запълнен и
+     заоблен (следва извивката на бара). Десният ръб е ПРАВ (без заобляне),
+     за да съвпада с чекпойнтите; заоблеността накрая идва от .progress-clip. */
   --p: 0%;
   position: absolute;
   top: 0;
   bottom: 0;
   left: -26px;
   width: calc(var(--p) + 26px);
-  border-radius: 999px;
   background: var(--accent);
   box-shadow: 0 0 12px 2px var(--accent-glow);
 }
